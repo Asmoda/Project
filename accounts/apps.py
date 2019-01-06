@@ -6,3 +6,9 @@ from django.apps import AppConfig
 
 class AccountsConfig(AppConfig):
     name = 'accounts'
+
+    def ready(self):
+    	try:
+    		import accounts.signals
+    	except ImportError:
+    		pass

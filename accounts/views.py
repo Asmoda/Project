@@ -18,51 +18,46 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import AuthenticationForm
 
+
 def login_user(request):
-	data = dict()
-	confirm_error = False
-	signup_form_active = False
-	data['loginned'] = False
+    data = dict()
+    confirm_error = False
+    signup_form_active = False
+    data['loginned'] = False
 
-	signup_form = SignUpForm()
+    signup_form = SignUpForm()
 
-	if request.method == 'POST':
-		login_form = AuthenticationForm(request, data=request.POST)
-		username = request.POST.get('username', '').strip()
-		password = request.POST.get('password', '').strip()
-		if login_form.is_valid():
-			data['form_is_valid'] = True
+    if request.method == 'POST':
+        login_form = AuthenticationForm(request, data=request.POST)
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        if login_form.is_valid():
+            data['form_is_valid'] = True
 
-			user = authenticate(username=username, password=password)
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					data['loginned'] = True
-				else:
-					confirm_error=True
-		else:
-			data['form_is_valid'] = False
-	else:
-		login_form = AuthenticationForm(request)
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                login(request, user)
+                data['loginned'] = True
+            else:
+                confirm_error = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        login_form = AuthenticationForm(request)
 
-	context = {'signup_form': signup_form, 'login_form': login_form, 'confirm_error': confirm_error,
-	'signup_form_active': signup_form_active }
-	data['html_form'] = render_to_string('registration/includes/partial_signup_create.html',
-		context,
-		request=request
-	)
-	return JsonResponse
+    context = {'signup_form': signup_form, 'login_form': login_form, 'confirm_error': confirm_error,
+               'signup_form_active': signup_form_active}
+    data['html_form'] = render_to_string(
+        'registration/includes/partial_signup_create.html', context, request=request)
+    return JsonResponse
 
 
 def signup_user(request):
-    data = dict()
-    signup_form_active = True
     login_form = AuthenticationForm(request)
 
     if request.method == 'POST':
         signup_form = SignUpForm(request.POST)
         if signup_form.is_valid():
-            data['form_is_valid'] = True
             user = signup_form.save(commit=False)
             user.is_active = False
             user.save()
@@ -76,18 +71,11 @@ def signup_user(request):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject, message)
-
-        else:
-            data['form_is_valid'] = False
     else:
         signup_form = SignUpForm()
 
-    context = {'signup_form': signup_form, 'login_form': login_form, 'signup_form_active': signup_form_active}
-    data['html_form'] = render_to_string('registration/includes/partial_signup_create.html',
-        context,
-        request=request
-    )
-    return JsonResponse(data)
+    context = {'form': signup_form, 'login_form': login_form}
+    return render(request, 'registration/signup.html', context)
 
 
 def account_activation_sent(request):
@@ -109,4 +97,6 @@ def activate(request, uidb64, token):
         return redirect('/')
     else:
         return render(request, 'registration/account_activation_invalid.html')
-# Create your views here.
+
+# def product_view(request):
+    

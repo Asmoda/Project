@@ -55,12 +55,33 @@
         <li><a href="#portfolio" class="page-scroll">Projects</a></li>
         <li><a href="#testimonials" class="page-scroll">Testimonials</a></li>
         <li><a href="#contact" class="page-scroll">Contact</a></li>
+        {% if user.is_authenticated %}
+                <li><a href="/accounts/product_view/">
+                <span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li>
+                  <a href="/accounts/logout/" 
+                  data-toggle="tooltip" 
+                  data-placement="bottom" 
+                  title="Logout">
+                    <span class="glyphicon glyphicon-off"></span>
+                  </a>
+                </li>
+              {% endif %}
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {% if not user.is_authenticated %}
+                <li><a href="/accounts/login_signup/" class="btn btn-calltoaction btn-primary js_login_signup_up">Login or Sign Up
+                </a></li>
+              {% endif %}
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
   </div>
 </nav>
 <!-- Header -->
+
+{% block content %}
 <header id="header">
   <div class="intro">
     <div class="overlay">
@@ -333,6 +354,8 @@
     </div>
   </div>
 </div>
+{% endblock content %}
+
 <!-- Contact Section -->
 <div id="contact">
   <div class="container">

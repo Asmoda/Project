@@ -20,8 +20,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'personal',
+    'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,11 +109,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+
+# STATIC
+STATIC_ROOT = str(os.path.join(BASE_DIR, '..', 'live', 'compiled_static'))
+
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    str(os.path.join(BASE_DIR, 'static')),
+]
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'personal/static/personal'),
-    )
+# MEDIA
+MEDIA_ROOT = str(os.path.join(BASE_DIR, 'media'))
+MEDIA_URL = '/media/'
 
+LOGIN_REDIRECT_URL = '/'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
