@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.db.models import Q
 from .models import UserProfile
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
