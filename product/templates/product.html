@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Product{% endblock %}
+
+{% block content %}
+<br><br><br><br><br><br><br>
+  <h2>Create Product</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ product_form.as_p }}
+    <button type="submit">Create</button>
+  </form>
+
+  {% for product in products %}
+  	{{ product.name }}
+  {% endfor %}
+{% endblock %}

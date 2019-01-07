@@ -17,9 +17,11 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from home.views import home_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('personal.urls')),
+    url(r'^$', home_view, name='home_view'),
     url(r'^accounts/', include('accounts.urls', namespace='accounts'), name='accounts'),
+    url(r'^product/', include('product.urls', namespace='product'), name='product'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

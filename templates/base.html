@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static from staticfiles %}
+{% load static %}
 
 <html lang="en">
 <head>
@@ -44,7 +44,6 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand page-scroll" href="#page-top">Innova</a>
-      <div class="phone"><span>Call Today</span>320-123-4321</div>
     </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -56,23 +55,25 @@
         <li><a href="#testimonials" class="page-scroll">Testimonials</a></li>
         <li><a href="#contact" class="page-scroll">Contact</a></li>
         {% if user.is_authenticated %}
-                <li><a href="/accounts/product_view/">
-                <span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="{% url 'product:product_view' %}">Product</a></li>
                 <li>
                   <a href="/accounts/logout/" 
                   data-toggle="tooltip" 
                   data-placement="bottom" 
                   title="Logout">
-                    <span class="glyphicon glyphicon-off"></span>
-                  </a>
+                  Logout</a>
                 </li>
               {% endif %}
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if not user.is_authenticated %}
-                <li><a href="/accounts/login_signup/" class="btn btn-calltoaction btn-primary js_login_signup_up">Login or Sign Up
-                </a></li>
+                <li>
+                  <a href="{% url 'accounts:login_user' %}" class="btn btn-calltoaction btn-primary js_login_signup_up">Login</a>
+                </li>
+                <li>
+                  <a href="{% url 'accounts:signup_user' %}" class="btn btn-calltoaction btn-primary js_login_signup_up">Signup</a>
+                </li>
               {% endif %}
       </ul>
     </div>
@@ -427,7 +428,6 @@
 <script type="text/javascript" src="{% static 'js/SmoothScroll.js' %}"></script> 
 <script type="text/javascript" src="{% static 'js/nivo-lightbox.js' %}"></script> 
 <script type="text/javascript" src="{% static 'js/jqBootstrapValidation.js' %}"></script> 
-<script type="text/javascript" src="{% static 'js/contact_me.js' %}"></script> 
 <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

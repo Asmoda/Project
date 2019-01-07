@@ -20,11 +20,6 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 def login_user(request):
-    data = dict()
-    confirm_error = False
-    signup_form_active = False
-    data['loginned'] = False
-
     signup_form = SignUpForm()
 
     if request.method == 'POST':
@@ -32,24 +27,16 @@ def login_user(request):
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
         if login_form.is_valid():
-            data['form_is_valid'] = True
 
             user = authenticate(username=username, password=password)
-            if user is not None and user.is_active:
+            if user and user.is_active:
                 login(request, user)
-                data['loginned'] = True
-            else:
-                confirm_error = True
-        else:
-            data['form_is_valid'] = False
+                return redirect('/')
     else:
         login_form = AuthenticationForm(request)
 
-    context = {'signup_form': signup_form, 'login_form': login_form, 'confirm_error': confirm_error,
-               'signup_form_active': signup_form_active}
-    data['html_form'] = render_to_string(
-        'registration/includes/partial_signup_create.html', context, request=request)
-    return JsonResponse
+    context = {'form': login_form}
+    return render(request, 'login.html', context)
 
 
 def signup_user(request):
@@ -64,7 +51,7 @@ def signup_user(request):
 
             current_site = get_current_site(request)
             subject = 'Activate Your Mysite Account'
-            message = render_to_string('registration/account_activation_email.html', {
+            message = render_to_string('account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -74,12 +61,8 @@ def signup_user(request):
     else:
         signup_form = SignUpForm()
 
-    context = {'form': signup_form, 'login_form': login_form}
-    return render(request, 'registration/signup.html', context)
-
-
-def account_activation_sent(request):
-    return render(request, 'registration/account_activation_sent.html')
+    context = {'form': signup_form}
+    return render(request, 'signup.html', context)
 
 
 def activate(request, uidb64, token):
@@ -89,14 +72,14 @@ def activate(request, uidb64, token):
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and account_activation_token.check_token(user, token):
+    if user and account_activation_token.check_token(user, token):
         user.is_active = True
         user.userprofile.email_confirmed = True
         user.save()
         login(request, user)
         return redirect('/')
     else:
-        return render(request, 'registration/account_activation_invalid.html')
+        return render(request, 'signup.html')
 
-# def product_view(request):
+
     

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile
+from accounts.models import UserProfile
 
 
 class SignUpForm(UserCreationForm):
@@ -20,5 +20,3 @@ class SignUpForm(UserCreationForm):
 
         return user
 
-# class ProductForm(forms.ModelForm):
-# 	model = Product
