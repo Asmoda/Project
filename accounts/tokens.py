@@ -55,4 +55,5 @@ class PasswordResetTokenGenerator:
     def _today(self):
         return date.today()
 
+
 account_activation_token = PasswordResetTokenGenerator()

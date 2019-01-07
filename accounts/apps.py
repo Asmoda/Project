@@ -8,7 +8,7 @@ class AccountsConfig(AppConfig):
     name = 'accounts'
 
     def ready(self):
-    	try:
-    		import accounts.signals
-    	except ImportError:
-    		pass
+        try:
+            import accounts.signals
+        except ImportError:
+            pass

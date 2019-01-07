@@ -21,6 +21,6 @@ def product_view(request):
             return HttpResponseRedirect('/product')
     else:
         product_form = ProductForm()
-    
+
     context = {'product_form': product_form, 'products': products}
     return render(request, 'product.html', context)
